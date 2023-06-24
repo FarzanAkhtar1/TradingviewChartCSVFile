@@ -1,3 +1,5 @@
+const { PriceScaleMode } = require("lightweight-charts");
+
 const getData = async () => {
   const res = await fetch('data.csv');
   const resp = await res.text();
@@ -25,13 +27,14 @@ const displayChart = async () => {
     timeScale: {
       timeVisible: true,
       secondsVisible: true,
-    },
-  };
+    }};
+    
 
   const domElement = document.getElementById('tvchart');
   const chart = LightweightCharts.createChart(domElement, chartProperties);
   const candleseries = chart.addCandlestickSeries();
   const klinedata = await getData();
+  
   candleseries.setData(klinedata);
 };
 
