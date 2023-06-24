@@ -1,5 +1,3 @@
-const { PriceScaleMode } = require("lightweight-charts");
-
 const getData = async () => {
   const res = await fetch('data.csv');
   const resp = await res.text();
@@ -22,19 +20,29 @@ const getData = async () => {
 
 const displayChart = async () => {
   const chartProperties = {
-    width: 1500,
-    height: 600,
+    width: 2140,
+    height: 1000,
     timeScale: {
       timeVisible: true,
       secondsVisible: true,
-    }};
-    
+    },
+    rightPriceScale: {
+      mode: LightweightCharts.PriceScaleMode.Logarithmic,
+    }
+  };
 
   const domElement = document.getElementById('tvchart');
   const chart = LightweightCharts.createChart(domElement, chartProperties);
-  const candleseries = chart.addCandlestickSeries();
+  const candleseries = chart.addCandlestickSeries(
+    {
+      priceFormat: {
+      type: 'price',
+      precision: 4,
+      minMove: 0.0001,
+      }
+    }
+  );
   const klinedata = await getData();
-  
   candleseries.setData(klinedata);
 };
 
